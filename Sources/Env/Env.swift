@@ -2,7 +2,7 @@ import Darwin
 
 @dynamicMemberLookup
 public final class Env {
-    subscript(dynamicMember name: String) -> String? {
+    public subscript(dynamicMember name: String) -> String? {
         get {
             guard let value = getenv(name) else { return nil }
             return String(validatingUTF8: value)

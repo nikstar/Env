@@ -2,14 +2,24 @@ import XCTest
 @testable import Env
 
 final class EnvTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(Env().text, "Hello, World!")
+    func testHome() {
+        let home = env.HOME
+        XCTAssert(home == NSHomeDirectory())
+    }
+    
+    func testSetUnset() {
+        env.TESTVAR = nil
+        XCTAssertNil(env.TESTVAR)
+        env.TESTVAR = "test"
+        XCTAssert(env.TESTVAR == "test")
+        env.TESTVAR = "test2"
+        XCTAssert(env.TESTVAR == "test2")
+        env.TESTVAR = nil
+        XCTAssertNil(env.TESTVAR)
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testHome", testHome),
+        ("testSetUnset", testSetUnset),
     ]
 }

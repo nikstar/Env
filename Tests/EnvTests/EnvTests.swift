@@ -17,9 +17,17 @@ final class EnvTests: XCTestCase {
         env.TESTVAR = nil
         XCTAssertNil(env.TESTVAR)
     }
+    
+    func testInout() {
+        env.PATH = "/usr/bin"
+        XCTAssert(env.PATH == "/usr/bin")
+        env.PATH! += ":/usr/local/bin"
+        XCTAssert(env.PATH == "/usr/bin:/usr/local/bin")
+    }
 
     static var allTests = [
         ("testHome", testHome),
         ("testSetUnset", testSetUnset),
+        ("testInout", testInout),
     ]
 }

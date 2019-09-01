@@ -11,19 +11,29 @@
 Add to your project via Swift package manager:
 
 ```
-        .package("https://github.com/nikstar/Env.git", from: "1.0.0")
+        .package("https://github.com/nikstar/Env.git", from: "2.0.0")
 ```
 
 
 ## Example
 
 ```swift
-guard let home = env.HOME else { return }
-env.PATH! += ":\(home)/bin"
+guard let home = Env.HOME else { return }
+Env.PATH! += ":\(home)/bin"
 ```
 
 Unsetting varibles:
 
 ```swift
-env.LC_LOCALE = nil
+Env.LC_LOCALE = nil
+```
+
+Throwing access:
+
+```swift
+do {
+    let v = try Env.get("NOTAVAR")
+} catch {
+    print(error) // "environment variable missing: NOTAVAR"
+}
 ```

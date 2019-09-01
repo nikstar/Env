@@ -1,8 +1,8 @@
 import Darwin
 
 @dynamicMemberLookup
-public final class Env {
-    public subscript(dynamicMember name: String) -> String? {
+public enum Env {
+    public static subscript(dynamicMember name: String) -> String? {
         get {
             guard let value = getenv(name) else { return nil }
             return String(validatingUTF8: value)
@@ -16,7 +16,8 @@ public final class Env {
         }
     }
     
-    fileprivate init() {}
+    public static func get(_ name: String) throws -> String {
+        if let value = Self[dynamicMember: name] { return value }
+        throw EnvironmentVariableMissing(name: name)
+    }
 }
-
-public let env = Env()

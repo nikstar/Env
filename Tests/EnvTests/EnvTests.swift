@@ -3,31 +3,41 @@ import XCTest
 
 final class EnvTests: XCTestCase {
     func testHome() {
-        let home = env.HOME
+        let home = Env.HOME
         XCTAssert(home == NSHomeDirectory())
     }
     
     func testSetUnset() {
-        env.TESTVAR = nil
-        XCTAssertNil(env.TESTVAR)
-        env.TESTVAR = "test"
-        XCTAssert(env.TESTVAR == "test")
-        env.TESTVAR = "test2"
-        XCTAssert(env.TESTVAR == "test2")
-        env.TESTVAR = nil
-        XCTAssertNil(env.TESTVAR)
+        Env.TESTVAR = nil
+        XCTAssertNil(Env.TESTVAR)
+        Env.TESTVAR = "test"
+        XCTAssert(Env.TESTVAR == "test")
+        Env.TESTVAR = "test2"
+        XCTAssert(Env.TESTVAR == "test2")
+        Env.TESTVAR = nil
+        XCTAssertNil(Env.TESTVAR)
     }
     
     func testInout() {
-        env.PATH = "/usr/bin"
-        XCTAssert(env.PATH == "/usr/bin")
-        env.PATH! += ":/usr/local/bin"
-        XCTAssert(env.PATH == "/usr/bin:/usr/local/bin")
+        Env.PATH = "/usr/bin"
+        XCTAssert(Env.PATH == "/usr/bin")
+        Env.PATH! += ":/usr/local/bin"
+        XCTAssert(Env.PATH == "/usr/bin:/usr/local/bin")
+    }
+    
+    func testThrowing() {
+        Env.TESTVAR = nil
+        XCTAssertNil(Env.TESTVAR)
+        XCTAssertThrowsError(try Env.get("TESTVAR")) { error in
+            guard let error = error as? EnvironmentVariableMissing else { XCTFail(); return }
+            XCTAssert(error == EnvironmentVariableMissing(name: "TESTVAR"))
+        }
     }
 
     static var allTests = [
         ("testHome", testHome),
         ("testSetUnset", testSetUnset),
         ("testInout", testInout),
+        ("testThrowing", testThrowing),
     ]
 }

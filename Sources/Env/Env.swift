@@ -1,4 +1,4 @@
-import Darwin
+import Foundation
 
 @dynamicMemberLookup
 public enum Env {
